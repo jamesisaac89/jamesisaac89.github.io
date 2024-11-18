@@ -6,13 +6,6 @@
     <script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.7/dist/handlebars.min.js"></script>
     <style>
         table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
         }
     </style>
 </head>
@@ -54,8 +47,7 @@
             function loadData() {
                 return $.getJSON('cit5students.json');
             }
-
-            // Function to render the Handlebars template
+            
             function renderTemplate(data, container) {
                 const source = $('#student-template').html();
                 const template = Handlebars.compile(source);
@@ -63,7 +55,6 @@
                 $(container).html(html);
             }
 
-            // Event handlers for buttons
             $('#cit-majors').click(function() {
                 loadData().then(function(data) {
                     const citMajors = data.filter(student => student.major === 'CIT');
