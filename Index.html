@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Student Majors</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.7/dist/handlebars.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Majors</h1>
+    <button id="cit-majors">CIT Majors</button>
+    <button id="bus-majors">BUS Majors</button>
+    
+
+    <script id="student-template" type="text/x-handlebars-template">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Major</th>
+                    <th>Midterm Score</th>
+                    <th>Final Exam Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this}}
+                <tr>
+                    <td>{{name}}</td>
+                    <td>{{major}}</td>
+                    <td>{{midterm}}</td>
+                    <td>{{final}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Function to load JSON data
+            function loadData() {
+                return $.getJSON('cit5students.json');
+            }
+
+            // Function to render the Handlebars template
+            function renderTemplate(data, container) {
+                const source = $('#student-template').html();
+                const template = Handlebars.compile(source);
+                const html = template(data);
+                $(container).html(html);
+            }
+
+            // Event handlers for buttons
+            $('#cit-majors').click(function() {
+                loadData().then(function(data) {
+                    const citMajors = data.filter(student => student.major === 'CIT');
+                    renderTemplate(citMajors, '#cit-results');
+                });
+            });
+
+            $('#bus-majors').click(function() {
+                loadData().then(function(data) {
+                    const busMajors = data.filter(student => student.major === 'BUS');
+                    renderTemplate(busMajors, '#bus-results');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
